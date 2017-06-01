@@ -22,7 +22,11 @@ At the command line::
     pip install skytravel
 
 .. role:: red
+.red{
+color:red;
+}
 :red:`import`
+
 Usage
 -----
 At the Python Shell::
