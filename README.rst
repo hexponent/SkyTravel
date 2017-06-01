@@ -20,3 +20,9 @@ Installation
 At the command line::
 
     pip install skytravel
+
+Usage
+-----
+At the Python Shell::
+
+    >>> import skytravel
