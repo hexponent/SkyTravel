@@ -21,8 +21,10 @@ At the command line::
 
     pip install skytravel
 
+.. role:: red
+
 Usage
 -----
 At the Python Shell::
 
-    >>> import skytravel
+    >>> :red:`import` skytravel
