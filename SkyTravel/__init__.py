@@ -1,6 +1,6 @@
 from skyscanner.skyscanner import Flights
-from easytravel.Structures import *
-from easytravel.arrays import *
+from skytravel.Structures import *
+from skytravel.arrays import *
 import pygame
 from urllib.request import urlopen
 import io
