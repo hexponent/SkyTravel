@@ -19,4 +19,4 @@ Installation
 ------------
 At the command line::
 
-    pip install easytravel
+    pip install skytravel
