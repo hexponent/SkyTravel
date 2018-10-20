@@ -33,9 +33,8 @@ class Agents(object):
         self.agents = agents
     
     def by_id(self, id):
-        for agent in self.agents:
-            if agent.id == id:
-                return agent
+        agent = list(filter(lamda x: x.id == id, self.agents))
+        return agent[0]
 
 class Leg(object):
     def __init__(self, id, number, origin_stat, destin_stat, places):
