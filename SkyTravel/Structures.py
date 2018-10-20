@@ -94,3 +94,17 @@ class Places(object):
         url = 'http://partners.api.skyscanner.net/apiservices/autosuggest/v1.0/RU/GBP/en?id='+airport.code+'-sky&apiKey='+self.__key
         r = eval(ur.urlopen(url).read().decode('utf8'))
         return r['Places'][0]['PlaceName']
+    
+class Pilot():
+    def __init__(self, name, id):
+        self.name = name
+        self.id = id
+        self.flight = None
+        
+    def set_flight(flight_id):
+        self.flight = flight_id
+        
+    def unset_flight():
+        if self.flight is not None:
+            self.flight = None
+ 
