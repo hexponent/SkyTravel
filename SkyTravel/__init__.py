@@ -22,14 +22,14 @@ link_box = pygame.transform.scale(link_box, (40, 34))
 
 def main():
     (originplace, destinationplace, outbounddate, inbounddate, adults, children, money) = get_flight_info()
-    people = adults+children
+    people = adults + children
 
     result = flights_service.get_result(
         country='UK',
         currency=currency,
         locale='uk-UA',
-        originplace=originplace+'-sky',
-        destinationplace=destinationplace+'-sky',
+        originplace=originplace + '-sky',
+        destinationplace=destinationplace + '-sky',
         outbounddate=outbounddate,
         inbounddate=inbounddate,
         adults=adults,
@@ -45,7 +45,7 @@ def main():
 
     flights = [Flight(el['PricingOptions'][0]['Price'], currency, people, el['PricingOptions'][0]['DeeplinkUrl'],
                       agents.by_id(el['PricingOptions'][0]['Agents'][0]), legs.by_id(el['OutboundLegId']))
-               for el in result['Itineraries'] if el['PricingOptions'][0]['Price'] <= money/people]
+               for el in result['Itineraries'] if el['PricingOptions'][0]['Price'] <= money / people]
 
     Data = DynamicArray()
     for flight in flights:
@@ -55,7 +55,7 @@ def main():
 
     max_length = 10
     start_count = 0
-    max_start = len(Data)-10
+    max_start = len(Data) - 10
 
     screen = pygame.display.set_mode((900, 600))
     caption = outbounddate + ' | ' + originplace + ' - ' + destinationplace + ' |'
@@ -86,10 +86,10 @@ def main():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 position = pygame.mouse.get_pos()
-                if 850 <= position[0] <= 850+40:
+                if 850 <= position[0] <= 850 + 40:
                     for i in range(max_length):
-                        if 15+60*i <= position[1] <= 15 + 34 + 60*i:
-                            lynk = Data.__getitem__(i+start_count).__getitem__(2)
+                        if 15 + 60 * i <= position[1] <= 15 + 34 + 60 * i:
+                            lynk = Data.__getitem__(i + start_count).__getitem__(2)
                             open_new_tab(lynk)
 
 
@@ -98,7 +98,7 @@ def get_flight_info():
     while True:
         try:
             origin_place = input("Enter origin place: ")
-            origin_place = loads(urlopen(place_check_url+origin_place).read().decode('utf8'))[0]['PlaceId']
+            origin_place = loads(urlopen(place_check_url + origin_place).read().decode('utf8'))[0]['PlaceId']
             break
         except:
             pass
@@ -106,7 +106,7 @@ def get_flight_info():
     while True:
         try:
             destination_place = input("Enter destination place: ")
-            destination_place = loads(urlopen(place_check_url+destination_place).read().decode('utf8'))[0]['PlaceId']
+            destination_place = loads(urlopen(place_check_url + destination_place).read().decode('utf8'))[0]['PlaceId']
             break
         except:
             pass
@@ -125,12 +125,11 @@ def get_flight_info():
 
 
 def update_screen(screen, data, start, max_length, link_img):
-    
     screen.fill((255, 255, 255))
 
     for i in range(max_length):
         try:
-            current_array = data.__getitem__(i+start)
+            current_array = data.__getitem__(i + start)
         except:
             break
         link = current_array.__getitem__(0)
@@ -138,14 +137,14 @@ def update_screen(screen, data, start, max_length, link_img):
         image_file = io.BytesIO(image_str)
         image = pygame.image.load(image_file)
         image = pygame.transform.scale(image, (100, 50))
-        pygame.draw.rect(screen, (0, 0, 0), (19, 4+60*i, 102, 52))
+        pygame.draw.rect(screen, (0, 0, 0), (19, 4 + 60 * i, 102, 52))
 
-        screen.blit(image, (20, 5+60*i))
+        screen.blit(image, (20, 5 + 60 * i))
         font = pygame.font.SysFont('Arial', 20)
-        screen.blit(font.render(current_array[1], True, (0, 0, 0)), (125, 15+60*i))
-        
-        
-        screen.blit(link_img, (850, 8+60*i))
+        screen.blit(font.render(current_array[1], True, (0, 0, 0)), (125, 15 + 60 * i))
+
+        screen.blit(link_img, (850, 8 + 60 * i))
     pygame.display.flip()
+
 
 main()
