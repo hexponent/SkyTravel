@@ -33,7 +33,8 @@ def main():
         outbounddate=outbounddate,
         inbounddate=inbounddate,
         adults=adults,
-        children=children).parsed
+        children=children
+    ).parsed
 
     result = eval(str(result))
     agents = Agents([Agent(el['Id'], el['Name'], el['ImageUrl']) for el in result['Agents']])
@@ -55,7 +56,7 @@ def main():
 
     max_length = 10
     start_count = 0
-    max_start = len(Data)-10
+    max_start = len(Data) - 10
 
     screen = pygame.display.set_mode((900, 600))
     caption = outbounddate + ' | ' + originplace + ' - ' + destinationplace + ' |'
@@ -88,8 +89,8 @@ def main():
                 position = pygame.mouse.get_pos()
                 if 850 <= position[0] <= 850+40:
                     for i in range(max_length):
-                        if 15+60*i <= position[1] <= 15 + 34 + 60*i:
-                            lynk = Data.__getitem__(i+start_count).__getitem__(2)
+                        if 15 + 60 * i <= position[1] <= 15 + 34 + 60 * i:
+                            lynk = Data.__getitem__(i + start_count).__getitem__(2)
                             open_new_tab(lynk)
 
 
@@ -97,55 +98,54 @@ def get_flight_info():
     place_check_url = 'https://www.skyscanner.net/dataservices/geo/v2.0/autosuggest/UK/en-GB/'
     while True:
         try:
-            origin_place = input("Enter origin place: ")
-            origin_place = loads(urlopen(place_check_url+origin_place).read().decode('utf8'))[0]['PlaceId']
+            origin_place = loads(urlopen(place_check_url + input("Enter origin place: ")).read().decode('utf8'))[0]['PlaceId']
             break
-        except:
-            pass
+        except Exception as exc:
+            print(exc)
 
     while True:
         try:
-            destination_place = input("Enter destination place: ")
-            destination_place = loads(urlopen(place_check_url+destination_place).read().decode('utf8'))[0]['PlaceId']
+            destination_place = loads(urlopen(place_check_url + input("Enter destination place: ")).read().decode('utf8'))[0]['PlaceId']
             break
-        except:
-            pass
+        except Exception as exc:
+            print(exc)
 
     outbound_date = input('Enter outbound date as yyyy-mm-dd: ')
     inbound_date = input('Enter inbound date as yyyy-mm-dd or Enter for one-way fligth: ')
 
     amount_adults = int(input('Enter number of adults(1-8): '))
-    assert 1 <= amount_adults <= 8, "Incorect value"
+    assert 0 < amount_adults < 9, "Incorrect value"
 
     amount_children = int(input('Enter number of children(0-8): '))
-    assert 0 <= amount_children <= 8, "Incorect value"
+    assert 0 <= amount_children < 9, "Incorrect value"
 
     budget = int(input('Enter your budget: '))
     return origin_place, destination_place, outbound_date, inbound_date, amount_adults, amount_children, budget
 
 
 def update_screen(screen, data, start, max_length, link_img):
-    
+
     screen.fill((255, 255, 255))
 
     for i in range(max_length):
         try:
-            current_array = data.__getitem__(i+start)
-        except:
+            current_array = data.__getitem__(i + start)
+        except Exception as exc:
+            print(exc)
             break
         link = current_array.__getitem__(0)
         image_str = urlopen(link).read()
         image_file = io.BytesIO(image_str)
         image = pygame.image.load(image_file)
         image = pygame.transform.scale(image, (100, 50))
-        pygame.draw.rect(screen, (0, 0, 0), (19, 4+60*i, 102, 52))
+        pygame.draw.rect(screen, (0, 0, 0), (19, 4 + 60 * i, 102, 52))
 
-        screen.blit(image, (20, 5+60*i))
+        screen.blit(image, (20, 5 + 60 * i))
         font = pygame.font.SysFont('Arial', 20)
-        screen.blit(font.render(current_array[1], True, (0, 0, 0)), (125, 15+60*i))
-        
-        
-        screen.blit(link_img, (850, 8+60*i))
+        screen.blit(font.render(current_array[1], True, (0, 0, 0)), (125, 15 + 60 * i))
+
+        screen.blit(link_img, (850, 8 + 60 * i))
     pygame.display.flip()
+
 
 main()
