@@ -1,9 +1,10 @@
-import xml.etree.ElementTree as ET
 import urllib.request as ur
+import xml.etree.ElementTree as ET
+
 
 class Flight(object):
-    def __init__(self, price, currency, people,  link, agent, leg):
-        self.price = price*people
+    def __init__(self, price, currency, people, link, agent, leg):
+        self.price = price * people
         self.currency = currency
         self.link = link
         self.agent = agent
@@ -31,11 +32,12 @@ class Agent(object):
 class Agents(object):
     def __init__(self, agents):
         self.agents = agents
-    
+
     def by_id(self, id):
         for agent in self.agents:
             if agent.id == id:
                 return agent
+
 
 class Leg(object):
     def __init__(self, id, number, origin_stat, destin_stat, places):
@@ -55,20 +57,19 @@ class Leg(object):
 class Legs(object):
     def __init__(self, legs):
         self.legs = legs
-    
+
     def by_id(self, id):
         for leg in self.legs:
             if leg.id == id:
                 return leg
 
+
 class Place(object):
-    def __init__(self, id, code, parentid=0):
+    def __init__(self, id, code, parent_id=0):
         self.id = id
-        self.parentid = parentid
+        self.parent_id = parent_id
         self.code = code
         self.name = None
-    
-        
 
 
 class Places(object):
@@ -82,7 +83,6 @@ class Places(object):
                 return place
 
     def city_name(self, id):
-        
         airport = self.by_id(id)
         city = None
         for city in self.places:
@@ -91,6 +91,10 @@ class Places(object):
         for country in self.places:
             if country.id == city.parentid:
                 break
-        url = 'http://partners.api.skyscanner.net/apiservices/autosuggest/v1.0/RU/GBP/en?id='+airport.code+'-sky&apiKey='+self.__key
+        url = "http://partners.api.skyscanner.net/apiservices/autosuggest/v1.0/RU/GBP/en?id={}-sky&apiKey={}".format(
+            airport.code,
+            self.__key
+        )
+
         r = eval(ur.urlopen(url).read().decode('utf8'))
         return r['Places'][0]['PlaceName']
