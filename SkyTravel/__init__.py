@@ -100,7 +100,11 @@ def get_flight_info():
             origin_place = input("Enter origin place: ")
             origin_place = loads(urlopen(place_check_url+origin_place).read().decode('utf8'))[0]['PlaceId']
             break
-        except:
+        except ValueError:
+            print("Enter valid origin place (should be string)")
+            pass
+        except KeyError:
+            print("Place not found. Try again")
             pass
 
     while True:
@@ -108,19 +112,29 @@ def get_flight_info():
             destination_place = input("Enter destination place: ")
             destination_place = loads(urlopen(place_check_url+destination_place).read().decode('utf8'))[0]['PlaceId']
             break
-        except:
+        except ValueError:
+            print("Enter valid destination place (should be string)")
+            pass
+        except KeyError:
+            print("Place not found. Try again")
             pass
 
     outbound_date = input('Enter outbound date as yyyy-mm-dd: ')
     inbound_date = input('Enter inbound date as yyyy-mm-dd or Enter for one-way fligth: ')
-
-    amount_adults = int(input('Enter number of adults(1-8): '))
+    try:
+        amount_adults = int(input('Enter number of adults(1-8): '))
+    except ValueError:
+        amount_adults = 0
     assert 1 <= amount_adults <= 8, "Incorect value"
 
-    amount_children = int(input('Enter number of children(0-8): '))
+    try:
+        amount_children = int(input('Enter number of children(0-8): '))
+    except ValueError:
+        amount_children = -1
     assert 0 <= amount_children <= 8, "Incorect value"
 
     budget = int(input('Enter your budget: '))
+
     return origin_place, destination_place, outbound_date, inbound_date, amount_adults, amount_children, budget
 
 
