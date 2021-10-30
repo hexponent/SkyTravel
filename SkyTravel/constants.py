@@ -1,0 +1,5 @@
+link_box_url = 'https://cloud.githubusercontent.com/assets/24274121/26486393/9bd4f85e-4203-11e7-8fca-b5ac24e7a60a.png'
+place_check_url = 'https://www.skyscanner.net/dataservices/geo/v2.0/autosuggest/UK/en-GB/'
+COUNTRY = 'UK'
+LOCALE = 'uk-UA'
+PLACE_SUFFIX = '-sky'
