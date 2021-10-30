@@ -7,13 +7,14 @@ import io
 from json import loads
 from webbrowser import open_new_tab
 
+from CONSTANTS import link_box_url, place_check_url, COUNTRY, LOCALE, PLACE_SUFFIX
+
 # DO NOT CHANGE api_key OR ENTER A VALID ONE
 api_key = 'uc817271155344762646981250767433'
 
 flights_service = Flights(api_key)
 currency = 'UAH'
 
-link_box_url = 'https://cloud.githubusercontent.com/assets/24274121/26486393/9bd4f85e-4203-11e7-8fca-b5ac24e7a60a.png'
 link_box_str = urlopen(link_box_url).read()
 link_box_file = io.BytesIO(link_box_str)
 link_box = pygame.image.load(link_box_file)
@@ -25,11 +26,11 @@ def main():
     people = adults+children
 
     result = flights_service.get_result(
-        country='UK',
+        country=COUNTRY,
         currency=currency,
-        locale='uk-UA',
-        originplace=originplace+'-sky',
-        destinationplace=destinationplace+'-sky',
+        locale=LOCALE,
+        originplace=originplace + PLACE_SUFFIX,
+        destinationplace=destinationplace + PLACE_SUFFIX,
         outbounddate=outbounddate,
         inbounddate=inbounddate,
         adults=adults,
@@ -94,7 +95,6 @@ def main():
 
 
 def get_flight_info():
-    place_check_url = 'https://www.skyscanner.net/dataservices/geo/v2.0/autosuggest/UK/en-GB/'
     while True:
         try:
             origin_place = input("Enter origin place: ")
