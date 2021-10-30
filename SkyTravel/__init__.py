@@ -7,8 +7,8 @@ import io
 from json import loads
 from webbrowser import open_new_tab
 
-# DO NOT CHANGE api_key OR ENTER A VALID ONE
-api_key = 'uc817271155344762646981250767433'
+from creds import api_key
+
 
 flights_service = Flights(api_key)
 currency = 'UAH'
