@@ -7,6 +7,7 @@ import io
 from json import loads
 from webbrowser import open_new_tab
 
+
 # DO NOT CHANGE api_key OR ENTER A VALID ONE
 api_key = 'uc817271155344762646981250767433'
 
@@ -18,6 +19,37 @@ link_box_str = urlopen(link_box_url).read()
 link_box_file = io.BytesIO(link_box_str)
 link_box = pygame.image.load(link_box_file)
 link_box = pygame.transform.scale(link_box, (40, 34))
+
+
+def quit_action():
+    pygame.quit()
+    raise SystemExit
+
+
+def key_down_action(event):
+    if event.key == pygame.K_DOWN:
+        start_count += 1
+        if start_count > max_start:
+            start_count = max_start
+            break
+
+    elif event.key == pygame.K_UP:
+        start_count -= 1
+        if start_count < 0:
+            start_count = 0
+            break
+
+    update_screen(screen, Data, start_count, max_length, link_box)
+    break
+
+
+def mouse_button_down_action():
+    position = pygame.mouse.get_pos()
+    if 850 <= position[0] <= 850+40:
+        for i in range(max_length):
+            if 15+60*i <= position[1] <= 15 + 34 + 60*i:
+                lynk = Data.__getitem__(i+start_count).__getitem__(2)
+                open_new_tab(lynk)
 
 
 def main():
@@ -63,34 +95,15 @@ def main():
 
     update_screen(screen, Data, start_count, max_length, link_box)
 
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                raise SystemExit
+                quit_action()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_DOWN:
-                    start_count += 1
-                    if start_count > max_start:
-                        start_count = max_start
-                        break
-
-                elif event.key == pygame.K_UP:
-                    start_count -= 1
-                    if start_count < 0:
-                        start_count = 0
-                        break
-
-                update_screen(screen, Data, start_count, max_length, link_box)
-                break
-
+                key_down_action(event)
             if event.type == pygame.MOUSEBUTTONDOWN:
-                position = pygame.mouse.get_pos()
-                if 850 <= position[0] <= 850+40:
-                    for i in range(max_length):
-                        if 15+60*i <= position[1] <= 15 + 34 + 60*i:
-                            lynk = Data.__getitem__(i+start_count).__getitem__(2)
-                            open_new_tab(lynk)
+                mouse_button_down_action()
 
 
 def get_flight_info():
@@ -125,7 +138,7 @@ def get_flight_info():
 
 
 def update_screen(screen, data, start, max_length, link_img):
-    
+
     screen.fill((255, 255, 255))
 
     for i in range(max_length):
@@ -143,8 +156,8 @@ def update_screen(screen, data, start, max_length, link_img):
         screen.blit(image, (20, 5+60*i))
         font = pygame.font.SysFont('Arial', 20)
         screen.blit(font.render(current_array[1], True, (0, 0, 0)), (125, 15+60*i))
-        
-        
+
+
         screen.blit(link_img, (850, 8+60*i))
     pygame.display.flip()
 
